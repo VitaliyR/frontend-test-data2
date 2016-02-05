@@ -1,11 +1,12 @@
 Frontend test v2
 ===========
-You should create simple web chat application. All data needed to complete this goal is presented in the current repository.
+You should create simple web chat application. All data needed to complete this goal is presented in the
+current repository.
 
 Task description
 -------------------
-This task is all about creating a simple web chat application, which is supports creating
-rooms and exchanging messages.
+This task is all about creating a simple web chat application, which is supports creating rooms
+and exchanging messages.
 
 ## Task
 
@@ -15,7 +16,6 @@ rooms and exchanging messages.
 - User should see other users in room
 - If user deleted own room, other users which were in this room should be redirected to default room
 - When user is connected in some room, last few messages from room should be showed
-- User can write and edit/delete own messages
 - If app lose connection, it should try to reconnect. After reconnecting it should automatically switch to room
 user was connected
 
@@ -66,7 +66,7 @@ Address: http://
 * **new room** ( { name: String } )
     * Sends **room created** to users
     * *Throws **appError** - wrong room name or already exists*
-* **edit room** ( { room: Room, remove: Boolean } )
+* **edit room** ( { id: String, name: String, remove: Boolean } )
     * Sends **room updated** or **room removed**
     * *Throws **appError** - wrong room names, room not found or room isn't yours*
 * **switch room** ( { room: Room } )
@@ -76,19 +76,38 @@ Address: http://
 * **new message** ( { message: String } )
     * Sends **mesage created**
     * *Throws **appError** - no message*
-* **edit message** ( { id: String, message: String, remove: Boolean } )
-    * Sends **message updated** or **message removed**
-    * *Throws **appError** - no message*
 
 ## Socket events:
-* **appError** *[@you]* ( { message: String } )
+* **appError** *[@you]* ( { id: Number (Error Code), message: String } )
 * **setup** *[@you]* ( { rooms: [Room], users: [User], messages: [Message] } )
 * **room created** *[@wide]* ( Room )
 * **room updated** *[@wide]* ( Room )
 * **room removed** *[@wide]* ( Room )
 * **user joined** *[@room]* ( [User] )
 * **user left** *[@room]* ( [User] )
-* **room switched** *[@you]* ( { messages: [Message], users: [User] } )
+* **room switched** *[@you]* ( { messages: [Message], users: [User], room: Room } )
 * **message created** *[@room]* ( Message )
-* **message updated** *[@room]* ( Message )
-* **message removed** *[@room]* ( Message )
+
+## Error Codes
+* **0**: Not Authenticated
+* **10**: No username provided
+* **11**: User already logged in
+* **20**: Room name should be provided
+* **21**: Room with provided name exists
+* **22**: Room id should be provided
+* **23**: Room not found
+* **24**: Room is not yours
+* **25**: Bad new room name provided
+* **30**: Bad new message content provided
+
+## Event flow example
+User logs in via `socket.emit('login', {username: 'My nick'})`. Now application listens to
+either `socket.on('appError')` if username is taken *(or some else error happened)* or to
+`socket.on('setup')` - which tells you successfully logged in and it is gives you data about rooms,
+ users and messages in default room which you are in.
+
+You can send a message via `socket.emit('new message', {message: 'hi'})` and receive back either `appError` or
+`messageCreated`.
+
+The same story with other events. If you lost your connection (it can happens time to time in chats) - you
+should be able to reconnect - just repeat login procedure - `socket.emit('login')` and wait for `socket.on('setup')`.
