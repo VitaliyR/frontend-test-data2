@@ -22,10 +22,12 @@ user was connected
 
 ## Frontend
 
+- HTML5 doctype should be used
+- SCSS/SASS should be used
 - Highlight current user name in chat on new message (@username)
 - Application should be responsible
-- SCSS/SASS should be used
-- HTML5 doctype should be used
+- Use HTML5 API methods for **notification** and **playing sound alarm** when new message incomes. Sound located in
+assets folder inside this repo.
 
 ## Other
 - All sources should be committed to public source repository, such as: http://github.com, http://bitbucket.org, etc
@@ -68,7 +70,11 @@ Address: http://
     * Sends **room updated** or **room removed**
     * *Throws **appError** - wrong room names, room not found or room isn't yours*
 * **switch room** ( { room: Room } )
+    * Sends **user left** and **user joined** for other clients
+    * Sends **room switched** to you
+    * *Throws **appError** - wrong room*
 * **new message** ( { message: String } )
+    * Sends **mesage created**
     * *Throws **appError** - no message*
 * **edit message** ( { id: String, message: String, remove: Boolean } )
     * Sends **message updated** or **message removed**
