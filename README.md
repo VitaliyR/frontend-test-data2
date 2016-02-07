@@ -144,8 +144,9 @@ Address: http://
 ## Event flow example
 User logs in via `socket.emit('login', {username: 'My nick'})`. Now application listens to
 either `socket.on('appError')` if username is taken *(or some else error happened)* or to
-`socket.on('setup')` - which tells you successfully logged in and it is gives you data about rooms,
- users and messages in default room which you are in.
+`socket.on('setup')` - which tells you successfully logged in and it is gives you data about rooms. Just after
+this event the server also emits to client event `room switched` to default room with the last few messages inside
+this room and users which are here too.
 
 You can send a message via `socket.emit('new message', {message: 'hi'})` and receive back either `appError` or
 `messageCreated`.
