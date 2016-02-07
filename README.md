@@ -3,29 +3,69 @@ Frontend test v2
 You should create simple web chat application. All data needed to complete this goal is presented in the
 current repository.
 
+## Design
+* Desktop
+![Screenshot of the application desktop layout](design/desktop-app1.png)
+![Screenshot of the application desktop layout](design/desktop-app2.png)
+![Screenshot of the application desktop layout](design/desktop-app3.png)
+* Mobile
+![Screenshot of the application mobile layout](design/mobile-app1.png)
+![Screenshot of the application mobile layout](design/mobile-app2.png)
+![Screenshot of the application mobile layout](design/mobile-app3.png)
+
 Task description
 -------------------
 This task is all about creating a simple web chat application, which is supports creating rooms
-and exchanging messages.
+and exchanging messages. Application should connect via sockets to the server with
+support of fallback to XHR (or JSONP) - if web sockets are not supported by the browser.
 
-## Task
+The application should firstly ask a user for his username and login him to the chat server.
+
+The login system is quite simple - you should send event **'login'** to the server with object contains
+your username `{ username: 'cool guy' }`. The server in case of successful login would reply
+you with event **'setup'** which contains data about available rooms and after that the server also
+will send you event **'switched room'** which would tell the client that he is connected to default room.
+
+The server will send client events **'message created'** when new message incomes into current room.
+The client in this case should notify user (via beep sound and notification API if it is available in
+the browser) and display it.
+
+Client can write messages into current room via **'new message'** with providing `{ message: 'New message' }`.
+In this case server will send everyone else in this room event **'message created'** containing this message.
+
+User can also create, edit and remove his own rooms. His own - means the room created by person with some username -
+quite simple.
+
+From time to time server can be unstable and disconnect the users. In this case the client should try to reconnect
+to see if server is up again and if it is - reconnect to it following the same login procedure (but using same username).
+
+
+## Task specification
 
 - User should be able to pick up his username when he is connecting to the chat
-- Username should be unique
+- Username is unique - server will send an error if user with same username is already logged in.
+You should support such situations and ask user to reenter username
 - User should see available rooms, can switch them, can create and delete own rooms
 - User should see other users in room
 - If user deleted own room, other users which were in this room should be redirected to default room
 - When user is connected in some room, last few messages from room should be showed
 - If app lose connection, it should try to reconnect. After reconnecting it should automatically switch to room
 user was connected
-
+- When new message arrives to the client, it should play beep sound and show notification (if browser supports it)
+- When user tries to close the tab contains web application browser should show alert with question if user really
+wants to close the tab
+- When user entered data to some input (e.g. message field) - by pressing enter app should send the message. Also
+the same story when user is editing room name
 
 ## Frontend
 
 - HTML5 doctype should be used
 - SCSS/SASS should be used
-- Highlight current user name in chat on new message (@username)
+- Use REM
 - Application should be responsible
+- For building UI use only the features of the CSS. Except icons - feel free to use font-awesome
+- Make hover states for the buttons according your tastes (e.g. change opacity etc)
+- In users sidebar user username should be semibold.
 - Use HTML5 API methods for **notification** and **playing sound alarm** when new message incomes. Sound located in
 assets folder inside this repo.
 
