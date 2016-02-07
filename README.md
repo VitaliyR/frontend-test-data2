@@ -5,13 +5,14 @@ current repository.
 
 ## Design
 * Desktop
+
 ![Screenshot of the application desktop layout](design/desktop-app1.png)
-![Screenshot of the application desktop layout](design/desktop-app2.png)
-![Screenshot of the application desktop layout](design/desktop-app3.png)
+
 * Mobile
+
 ![Screenshot of the application mobile layout](design/mobile-app1.png)
-![Screenshot of the application mobile layout](design/mobile-app2.png)
-![Screenshot of the application mobile layout](design/mobile-app3.png)
+
+* View more design images in design folder
 
 Task description
 -------------------
