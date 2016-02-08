@@ -131,6 +131,7 @@ Address: http://tests2.dotask.org/socket.io/
 
 ## Error Codes
 * **0**: Not Authenticated
+* **1**: Username prohibited
 * **10**: No username provided
 * **11**: User already logged in
 * **20**: Room name should be provided
