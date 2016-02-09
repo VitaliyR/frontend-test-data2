@@ -65,6 +65,7 @@ the same story when user is editing room name
 - Use REM
 - Application should be responsible
 - For building UI use only the features of the CSS. Except icons - feel free to use font-awesome
+- Browser support: latest Chrome, Firefox, IE
 - Make hover states for the buttons according your tastes (e.g. change opacity etc)
 - In users sidebar user username should be semibold.
 - Use HTML5 API methods for **notification** and **playing sound alarm** when new message incomes. Sound located in
